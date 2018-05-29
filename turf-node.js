@@ -9,7 +9,18 @@ module.exports = function(RED) {
             
             try {
                 this.status({fill:"blue",shape:"dot",text:"calculating"});
-                var output = turf[turffunction].apply(null, turfcontext);
+                var output;
+                switch (turffunction) {
+				case "length":
+					output = turf.length(turfcontext[0],turfcontext[1]);
+					break;
+				case "lineString":
+					output = turf.lineString(turfcontext[0], turfcontext[1]);
+					break;
+				default:
+                    output = turf[turffunction].apply(null, turfcontext);
+			}
+                
                 msg.payload = output;
                 this.status({});
                 node.send(msg)   
